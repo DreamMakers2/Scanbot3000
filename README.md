@@ -53,20 +53,20 @@ flowchart LR
     TEENSY <-->|"framed UART"| X1
     TEENSY <-->|"framed UART"| X2
 
-    classDef operator fill:#f8fbff,stroke:#3b82f6,color:#172033,stroke-width:1.5px;
-    classDef host fill:#f7fcfa,stroke:#0f766e,color:#172033,stroke-width:1.5px;
-    classDef supervisor fill:#faf8ff,stroke:#7c3aed,color:#172033,stroke-width:1.5px;
-    classDef axis fill:#fffaf3,stroke:#b45309,color:#172033,stroke-width:1.5px;
+    classDef operator fill:#eaf3ff,stroke:#3b82f6,color:#14213d,stroke-width:1.5px;
+    classDef host fill:#e8f7f2,stroke:#0f766e,color:#14213d,stroke-width:1.5px;
+    classDef supervisor fill:#f1ecff,stroke:#7c3aed,color:#14213d,stroke-width:1.5px;
+    classDef axis fill:#fff1df,stroke:#b45309,color:#14213d,stroke-width:1.5px;
 
     class UI operator;
     class PI host;
     class TEENSY supervisor;
     class R,Z,X1,X2 axis;
 
-    style L1 fill:#ffffff,stroke:#d8e1ec,color:#475569,stroke-width:1px
-    style L2 fill:#ffffff,stroke:#d8e1ec,color:#475569,stroke-width:1px
-    style L3 fill:#ffffff,stroke:#d8e1ec,color:#475569,stroke-width:1px
-    style L4 fill:#ffffff,stroke:#d8e1ec,color:#475569,stroke-width:1px
+    style L1 fill:#f5f9ff,stroke:#bfd7f7,color:#1d4f91,stroke-width:1px
+    style L2 fill:#f3faf7,stroke:#b8ddd3,color:#17665f,stroke-width:1px
+    style L3 fill:#f8f5ff,stroke:#d6c7f5,color:#6043a7,stroke-width:1px
+    style L4 fill:#fff8ef,stroke:#ead1ad,color:#8a5417,stroke-width:1px
     linkStyle default stroke:#64748b,stroke-width:1.5px;
 ```
 
