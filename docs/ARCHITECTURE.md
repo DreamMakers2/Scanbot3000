@@ -1,6 +1,59 @@
 # ScanBot3000 Architecture
 
-![ScanBot3000 technical architecture](assets/architecture.svg)
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif","primaryTextColor":"#0f172a","lineColor":"#64748b","tertiaryColor":"#f8fafc"}}}%%
+flowchart LR
+    subgraph OP["01 · Operator layer"]
+        direction TB
+        UI["ScanBot3000 Kinematics<br/>Static HTML / CSS / JS<br/>Three.js 0.157.0<br/>scan paths · point cloud"]
+    end
+
+    subgraph HOST["02 · Control host"]
+        direction TB
+        PI["Raspberry Pi 4B<br/>ScanBot3000-control<br/>FastAPI + Uvicorn<br/>REST · WebSocket · pyserial"]
+    end
+
+    subgraph SUP["03 · Motion supervisor"]
+        direction TB
+        TEENSY["Teensy 4.1<br/>homing · coordination · soft limits<br/>telemetry aggregation<br/>USB + Pi console mirror"]
+    end
+
+    subgraph AXES["04 · Distributed axes"]
+        direction TB
+        R["R axis · ESP32-S3<br/>TMC2209 · DS18B20 · limit input<br/>VL6180X ranging · NeoPixel"]
+        Z["Z axis · ESP32-S3<br/>TMC2209 · DS18B20 · limit input<br/>AS5600 encoder"]
+        X1["X1 axis · ESP32-S3<br/>TMC2209 · DS18B20 · limit input<br/>AS5600 · virtual X / P pair"]
+        X2["X2 axis · ESP32-S3<br/>TMC2209 · DS18B20 · limit input<br/>AS5600 · virtual X / P pair"]
+    end
+
+    UI <-->|"REST · WebSocket"| PI
+    PI <-->|"UART · 1,000,000 baud"| TEENSY
+    TEENSY <-->|"framed UART"| R
+    TEENSY <-->|"framed UART"| Z
+    TEENSY <-->|"framed UART"| X1
+    TEENSY <-->|"framed UART"| X2
+
+    TRUST["Trust & safety boundary<br/>Control API is intentionally unauthenticated<br/>and intended only for a trusted local network.<br/>Physical limits and emergency stop remain machine responsibilities."]
+    PI -. "privileged machine-control access" .-> TRUST
+
+    classDef operator fill:#eff6ff,stroke:#60a5fa,stroke-width:1.5px,color:#0f172a;
+    classDef host fill:#ecfdf5,stroke:#34d399,stroke-width:1.5px,color:#0f172a;
+    classDef supervisor fill:#f5f3ff,stroke:#8b5cf6,stroke-width:1.5px,color:#0f172a;
+    classDef axis fill:#fffbeb,stroke:#f59e0b,stroke-width:1.25px,color:#0f172a;
+    classDef boundary fill:#0f172a,stroke:#334155,stroke-width:1.5px,color:#e2e8f0;
+
+    class UI operator;
+    class PI host;
+    class TEENSY supervisor;
+    class R,Z,X1,X2 axis;
+    class TRUST boundary;
+
+    style OP fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px
+    style HOST fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px
+    style SUP fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px
+    style AXES fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px
+    linkStyle default stroke:#64748b,stroke-width:1.5px;
+```
 
 ## Repository boundaries
 
