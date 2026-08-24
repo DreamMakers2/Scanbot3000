@@ -1,0 +1,45 @@
+name: Restore exact ScanBot3000 hero
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.hero-transfer/READY'
+
+permissions:
+  contents: write
+
+jobs:
+  restore-hero:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct and verify exact PNG
+        shell: bash
+        run: |
+          cat .hero-transfer/chunk-* | base64 --decode > /tmp/scanbot3000-hero.png
+          echo "6fa762f7ff361ec15519488394f9f23d144bdf68252a361cde576e35c52d5f4c  /tmp/scanbot3000-hero.png" | sha256sum -c -
+          python - <<'PY'
+          import struct
+          p = '/tmp/scanbot3000-hero.png'
+          with open(p, 'rb') as f:
+              header = f.read(24)
+          assert header[:8] == b'\x89PNG\r\n\x1a\n', 'not a PNG'
+          width, height = struct.unpack('>II', header[16:24])
+          assert (width, height) == (1774, 887), (width, height)
+          print(f'verified PNG {width}x{height}')
+          PY
+          grep -Fq 'docs/assets/scanbot3000-hero.png' README.md
+
+      - name: Commit exact binary asset
+        shell: bash
+        run: |
+          cp /tmp/scanbot3000-hero.png docs/assets/scanbot3000-hero.png
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/assets/scanbot3000-hero.png
+          git commit -m 'docs: restore exact full-resolution ScanBot3000 hero'
+          git push origin HEAD:main
