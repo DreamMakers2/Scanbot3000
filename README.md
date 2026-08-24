@@ -53,15 +53,21 @@ flowchart LR
     TEENSY <-->|"framed UART"| X1
     TEENSY <-->|"framed UART"| X2
 
-    classDef operator fill:#eff6ff,stroke:#2563eb,color:#0f172a,stroke-width:1.5px;
-    classDef host fill:#ecfdf5,stroke:#059669,color:#0f172a,stroke-width:1.5px;
-    classDef supervisor fill:#f5f3ff,stroke:#7c3aed,color:#0f172a,stroke-width:1.5px;
-    classDef axis fill:#fffbeb,stroke:#d97706,color:#0f172a,stroke-width:1.25px;
+    classDef operator fill:#f8fbff,stroke:#3b82f6,color:#172033,stroke-width:1.5px;
+    classDef host fill:#f7fcfa,stroke:#0f766e,color:#172033,stroke-width:1.5px;
+    classDef supervisor fill:#faf8ff,stroke:#7c3aed,color:#172033,stroke-width:1.5px;
+    classDef axis fill:#fffaf3,stroke:#b45309,color:#172033,stroke-width:1.5px;
 
     class UI operator;
     class PI host;
     class TEENSY supervisor;
     class R,Z,X1,X2 axis;
+
+    style L1 fill:#ffffff,stroke:#d8e1ec,color:#475569,stroke-width:1px
+    style L2 fill:#ffffff,stroke:#d8e1ec,color:#475569,stroke-width:1px
+    style L3 fill:#ffffff,stroke:#d8e1ec,color:#475569,stroke-width:1px
+    style L4 fill:#ffffff,stroke:#d8e1ec,color:#475569,stroke-width:1px
+    linkStyle default stroke:#64748b,stroke-width:1.5px;
 ```
 
 The verified project flow is browser visualization → Raspberry Pi control bridge → Teensy motion supervisor → distributed ESP32-S3 axis controllers. Commands and telemetry travel bidirectionally over REST/WebSocket and serial links.
