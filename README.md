@@ -25,29 +25,48 @@ This home repository intentionally does **not** duplicate those source trees and
 
 ## 🧩 Architecture
 
-![ScanBot3000 technical architecture](docs/assets/architecture.svg)
+```mermaid
+flowchart LR
+    subgraph L1["01 · Operator"]
+        UI["ScanBot3000 Kinematics<br/>Three.js browser client<br/>scan paths · point cloud"]
+    end
 
-The verified project flow is:
+    subgraph L2["02 · Control Host"]
+        PI["Raspberry Pi 4B<br/>ScanBot3000-control<br/>FastAPI · Uvicorn · pyserial"]
+    end
 
-```text
-Browser / ScanBot3000-kinematics
-        │  REST + WebSocket
-        ▼
-Raspberry Pi 4B / ScanBot3000-control
-        │  UART · 1,000,000 baud
-        ▼
-Teensy 4.1 motion supervisor / ScanBot3000-firmware
-        │  framed UART
-        ▼
-ESP32-S3 axis nodes · R · Z · X1 · X2
-        │
-        ├─ TMC2209 stepper control
-        ├─ DS18B20 + limit input + OLED + LEDs
-        ├─ AS5600 on non-R axes
-        └─ VL6180X ranging on R
+    subgraph L3["03 · Motion Supervisor"]
+        TEENSY["Teensy 4.1<br/>homing · coordination · soft limits<br/>telemetry aggregation"]
+    end
+
+    subgraph L4["04 · Distributed Axes"]
+        R["R · ESP32-S3<br/>TMC2209 · VL6180X"]
+        Z["Z · ESP32-S3<br/>TMC2209 · AS5600"]
+        X1["X1 · ESP32-S3<br/>TMC2209 · AS5600"]
+        X2["X2 · ESP32-S3<br/>TMC2209 · AS5600"]
+    end
+
+    UI <-->|"REST · WebSocket"| PI
+    PI <-->|"UART · 1,000,000 baud"| TEENSY
+    TEENSY <-->|"framed UART"| R
+    TEENSY <-->|"framed UART"| Z
+    TEENSY <-->|"framed UART"| X1
+    TEENSY <-->|"framed UART"| X2
+
+    classDef operator fill:#eff6ff,stroke:#2563eb,color:#0f172a,stroke-width:1.5px;
+    classDef host fill:#ecfdf5,stroke:#059669,color:#0f172a,stroke-width:1.5px;
+    classDef supervisor fill:#f5f3ff,stroke:#7c3aed,color:#0f172a,stroke-width:1.5px;
+    classDef axis fill:#fffbeb,stroke:#d97706,color:#0f172a,stroke-width:1.25px;
+
+    class UI operator;
+    class PI host;
+    class TEENSY supervisor;
+    class R,Z,X1,X2 axis;
 ```
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for component boundaries and data flow.
+The verified project flow is browser visualization → Raspberry Pi control bridge → Teensy motion supervisor → distributed ESP32-S3 axis controllers. Commands and telemetry travel bidirectionally over REST/WebSocket and serial links.
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for component boundaries, trust boundaries, and detailed data flow.
 
 ## 🚀 Getting started
 
