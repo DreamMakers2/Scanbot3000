@@ -11,6 +11,8 @@ An open motion-control, visualization, and scanning stack built from a browser k
 
 ScanBot3000 is organized as three focused implementation repositories plus this project-home repository. The split keeps firmware, host control, and browser visualization independently understandable while this repository provides the system-level architecture, setup order, hardware overview, release compatibility manifest, security model, and contributor entry point.
 
+> **Project home:** [Scanbot3000](https://github.com/DreamMakers2/Scanbot3000)
+
 ## Project repositories
 
 | Repository | Role | Short description |
