@@ -1,0 +1,23 @@
+project: ScanBot3000
+release: initial-public-release
+release_date: 2026-08-25
+schema: 1
+
+components:
+  firmware:
+    repository: DreamMakers2/ScanBot3000-firmware
+    branch: main
+    commit: 964ecc718b882d958bbe0dd5d286ff41a9c007ca
+  control:
+    repository: DreamMakers2/ScanBot3000-control
+    branch: main
+    commit: 1f7084f3708cef7515d30a2644c4c779307b10c4
+  kinematics:
+    repository: DreamMakers2/ScanBot3000-kinematics
+    branch: main
+    commit: 04e414dcc30276cf4e4c97b43f12034032de0884
+
+notes:
+  - Each component is independently maintained and may version separately.
+  - These commits define the reviewed initial public baseline; they are not a claim of certification or production safety.
+  - Hardware-specific revalidation items are documented in each component's public release checklist.

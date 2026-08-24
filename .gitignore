@@ -1,0 +1,14 @@
+# Optional component clones created by scripts/clone-all.sh
+components/
+
+# Local environment / editor / OS files
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*~
+*.log
