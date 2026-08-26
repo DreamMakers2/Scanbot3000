@@ -7,7 +7,7 @@ An open motion-control, visualization, and scanning stack built from a browser k
 ![Control](https://img.shields.io/badge/control-FastAPI-009688)
 ![Visualization](https://img.shields.io/badge/visualization-Three.js-black)
 
-![ScanBot3000 overview](docs/assets/scanbot3000-hero.png)
+![ScanBot3000 overview](docs/assets/scanbot3000-platform-overview.png)
 
 ScanBot3000 is organized as three focused implementation repositories plus this project-home repository. The split keeps firmware, host control, and browser visualization independently understandable while this repository provides the system-level architecture, setup order, hardware overview, release compatibility manifest, security model, and contributor entry point.
 
